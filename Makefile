@@ -1,16 +1,19 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall
-LIBS = -lzmq -lspdlog -lpcap -lfmt
 
-TARGET = test
+all: sniffer viewer
 
-all: $(TARGET)
+sniffer: sniffer.cpp
+	$(CXX) $(CXXFLAGS) sniffer.cpp -o sniffer -lpcap -lzmq
 
-$(TARGET): main.cpp
-	$(CXX) $(CXXFLAGS) main.cpp $(LIBS) -o $(TARGET)
-
-run: $(TARGET)
-	sudo ./$(TARGET)
+viewer: viewer.cpp
+	$(CXX) $(CXXFLAGS) viewer.cpp -o viewer -lzmq
 
 clean:
-	rm -f $(TARGET)
+	rm -f sniffer viewer
+
+run-sniffer: sniffer
+	sudo ./sniffer
+
+run-viewer: viewer
+	./viewer
